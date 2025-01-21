@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/project');
 const timesheetRoutes = require('./routes/timesheet');
 const clientRoutes = require('./routes/clientRoutes');
+const cors = require('cors');
 const app = express();
 
 // Connect to DB
@@ -14,6 +15,7 @@ connectDB();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoutes);

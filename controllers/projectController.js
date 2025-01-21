@@ -26,6 +26,7 @@ const addProject = async (req, res) => {
       message: 'Project created successfully',
       project,
     });
+    console.log('Project created successfully', project)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

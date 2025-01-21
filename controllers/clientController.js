@@ -14,6 +14,7 @@ const addClient = async (req, res) => {
       message: 'Client created successfully',
       client,
     });
+    console.log('Client created successfully', client)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
