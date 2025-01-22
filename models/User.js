@@ -14,8 +14,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    projects: [{ type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Project' }], // Reference to projects
+    clients: [{ type: mongoose.Schema.Types.ObjectId, 
+        ref: 'client' }], // Reference to projects
 
 });
 

@@ -8,7 +8,7 @@ router.get('/:userId', async (req, res) => {
 
     try {
         const user = await User.findById(userId).populate({
-            path: 'projects',
+            path: 'Client',
             populate: { path: 'client timesheets' }, // Populate nested references
         });
 
