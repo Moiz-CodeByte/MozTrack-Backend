@@ -1,11 +1,12 @@
 const Client = require('../models/Client');
-const user = require('../models/User')
+const User = require('../models/User')
 const addClient = async (req, res) => {
   try {
     const { name, email } = req.body;
-
-    // Extract user ID from authenticated user
     const userId = req.user.id;
+    const user = await User.findById(userId);
+    // Extract user ID from authenticated user
+    
     
     const client = new Client({ name, email, userId });
       await client.save();
@@ -14,6 +15,8 @@ const addClient = async (req, res) => {
     
     // Save the updated user
     //await user.save();
+    user.clients.push(client);
+    await user.save();
 
     res.status(201).json({
       message: 'Client created successfully',
