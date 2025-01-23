@@ -82,6 +82,26 @@ const deleteProject = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getProjects = async (req, res) => {
+  try {
+    const userId = req.user.id; // Extract authenticated user ID
+    const { clientId } = req.query; // Optional client ID for filtering
+
+    const query = { user: userId };
+    if (clientId) {
+      query.client = clientId; // Filter by client ID if provided
+    }
+
+    const projects = await Project.find(query).populate('client', 'name email'); // Populate client info
+
+    res.status(200).json({
+      message: 'Projects retrieved successfully',
+      projects,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
-module.exports = { addProject, updateProject, deleteProject };
+module.exports = { addProject, updateProject, deleteProject, getProjects };
