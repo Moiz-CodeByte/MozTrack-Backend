@@ -32,4 +32,56 @@ const addProject = async (req, res) => {
   }
 };
 
-module.exports = { addProject };
+const updateProject = async (req, res) => {
+  try {
+    const { id } = req.params; // Project ID from URL parameters
+    const { name, clientId } = req.body; // Data to update
+
+    if (!name && !clientId) {
+      return res.status(400).json({ message: 'At least one field to update is required' });
+    }
+
+    const updatedFields = {};
+    if (name) updatedFields.name = name;
+    if (clientId) updatedFields.client = clientId;
+
+    const updatedProject = await Project.findByIdAndUpdate(
+      id,
+      { $set: updatedFields },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.status(200).json({
+      message: 'Project updated successfully',
+      project: updatedProject,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const deleteProject = async (req, res) => {
+  try {
+    const { id } = req.params; // Project ID from URL parameters
+
+    const deletedProject = await Project.findByIdAndDelete(id);
+
+    if (!deletedProject) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+
+    res.status(200).json({
+      message: 'Project deleted successfully',
+      project: deletedProject,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+module.exports = { addProject, updateProject, deleteProject };
