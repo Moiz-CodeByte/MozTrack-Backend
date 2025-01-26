@@ -4,7 +4,7 @@ const Project = require('../models/Project');
 
 
 const addTime = async (req, res) => {
-    const { projectId, timerValue } = req.body;
+    const { projectId, timerValue, name } = req.body;
 
     try {
         const project = await Project.findById(projectId);
@@ -13,7 +13,7 @@ const addTime = async (req, res) => {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        const timesheet = new Timesheet({ project: projectId, timerValue });
+        const timesheet = new Timesheet({ project: projectId, name: name, timerValue });
         await timesheet.save();
 
         // Add timesheet to project
