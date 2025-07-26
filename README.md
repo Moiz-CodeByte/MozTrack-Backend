@@ -7,8 +7,8 @@ MozTrack is a project management tool designed to help you manage clients, proje
 ## Project Structure
 The project is organized as follows:
 - **Backend**: Located in the `MozTrack-Backend` repo, built with MongoDB, Express.js, and Node.js. 
-- **Frontend**: Located in the `Moz-Track` repo, developed using TypeScript, Bootstrap, and Next.js.
-     link : https://github.com/Moiz-CodeByte/moz-track.git
+- **Frontend**: Located in the `MozTrack` repo, developed using TypeScript, Bootstrap, and Next.js.
+     link : https://github.com/Moiz-CodeByte/MozTrack.git
 
 ---
 
@@ -30,7 +30,7 @@ The project is organized as follows:
    ```bash
    git clone https://github.com/Moiz-CodeByte/MozTrack-Backend.git
    ```
-1. Navigate to the backend folder:
+2. Navigate to the backend folder:
    
    ```bash
    cd MozTrack-Backend
@@ -48,12 +48,16 @@ The project is organized as follows:
 ---
 
 ### Frontend Setup
-1. Navigate to the main directory of repo
-2. Install dependencies:
+1. Git clone the frontend of MozTrack
+   ```bash
+   git clone https://github.com/Moiz-CodeByte/MozTrack.git
+   ```   
+2. Navigate to the main directory of repo
+3. Install dependencies:
    ```bash
    npm install
    ```
-3. Run the development server:
+4. Run the development server:
    ```bash
    npm run dev
    ```
