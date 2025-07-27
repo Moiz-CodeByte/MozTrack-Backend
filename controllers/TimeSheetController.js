@@ -4,7 +4,7 @@ const Project = require('../models/Project');
 
 
 const addTime = async (req, res) => {
-    const { projectId, timerValue, name } = req.body;
+    const { projectId, timerValue, name, createdAt } = req.body;
 
     try {
         const project = await Project.findById(projectId);
@@ -13,7 +13,19 @@ const addTime = async (req, res) => {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        const timesheet = new Timesheet({ project: projectId, name: name, timerValue });
+        // Create timesheet data with required fields
+        const timesheetData = { 
+            project: projectId, 
+            name: name, 
+            timerValue 
+        };
+        
+        // Add createdAt if provided
+        if (createdAt) {
+            timesheetData.createdAt = createdAt;
+        }
+
+        const timesheet = new Timesheet(timesheetData);
         await timesheet.save();
 
         // Add timesheet to project
@@ -29,16 +41,24 @@ const addTime = async (req, res) => {
 
 const updateTime = async (req, res) => {
     const { id } = req.params; // Timesheet ID from URL
-    const { timerValue } = req.body; // New timer value
+    const { timerValue, createdAt } = req.body; // New timer value and optional createdAt
   
     try {
       if (!timerValue) {
         return res.status(400).json({ message: 'Timer value is required' });
       }
+      
+      // Create update object with timerValue
+      const updateData = { timerValue };
+      
+      // Add createdAt to update if provided
+      if (createdAt) {
+        updateData.createdAt = createdAt;
+      }
   
       const updatedTimesheet = await Timesheet.findByIdAndUpdate(
         id,
-        { timerValue },
+        updateData,
         { new: true } // Return the updated document
       );
   
