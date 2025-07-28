@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 // Configure CORS for production
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? process.env.FRONTEND_URL || 'https://your-app-name.herokuapp.com'
+    ? process.env.FRONTEND_URL || 'https://moz-track.vercel.app'
     : 'http://localhost:3000',
   credentials: true
 }));
