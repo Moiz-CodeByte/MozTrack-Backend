@@ -82,6 +82,25 @@ Alternatively, you can use the provided deployment scripts:
 - For Windows: `deploy-heroku.bat`
 - For Linux/Mac: `deploy-heroku.sh`
 
+### Troubleshooting Heroku Deployment
+
+If you encounter issues with your Heroku deployment, such as 502 errors, we provide several tools to help diagnose and fix the problems:
+
+1. **Run the Diagnostic Tool**:
+   - For Windows: `run-diagnostics.bat`
+   - For Linux/Mac: `./run-diagnostics.sh`
+
+2. **Check Heroku Configuration**:
+   - For Windows: `check-heroku-config.bat`
+   - For Linux/Mac: `./check-heroku-config.sh`
+
+3. **Comprehensive Troubleshooting Guide**:
+   - Refer to [Heroku Troubleshooting Guide](./HEROKU_TROUBLESHOOTING.md) for detailed steps to resolve common issues.
+
+4. **Test Heroku Configuration Locally**:
+   - For Windows: `test-heroku-locally.bat`
+   - For Linux/Mac: `./test-heroku-locally.sh`
+
 ---
 
 ### Frontend Setup
