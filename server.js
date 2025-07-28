@@ -15,7 +15,13 @@ connectDB();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+// Configure CORS for production
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://moz-track.vercel.app', /\.vercel\.app$/] 
+    : 'http://localhost:3000',
+  credentials: true
+}));
 
 // Routes
 app.use('/api/auth', authRoutes);
