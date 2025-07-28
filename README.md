@@ -25,7 +25,7 @@ The project is organized as follows:
 - Ensure you have Node.js and npm installed.
 - MongoDB should be installed and running on your system.
 
-### Backend Setup
+### Backend Setup (Local Development)
 1. Git clone the backend of MozTrack
    ```bash
    git clone https://github.com/Moiz-CodeByte/MozTrack-Backend.git
@@ -39,11 +39,48 @@ The project is organized as follows:
    ```bash
    npm install
    ```
-4. Start the backend server:
+4. Create a `.env` file in the root directory with the following variables:
+   ```
+   MONGO_URI=mongodb://localhost:27017/MozTrack
+   JWT_SECRET=your_jwt_secret_key
+   PORT=5000
+   ```
+5. Start the backend server:
    ```bash
-   node server
+   npm run dev
    ```
    By default, the server runs on `http://localhost:5000`.
+
+### Production Deployment (Heroku)
+
+For detailed instructions on deploying the backend to Heroku, please refer to the [Heroku Deployment Guide](./HEROKU_DEPLOYMENT.md).
+
+Quick deployment steps:
+
+1. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+2. Login to Heroku:
+   ```bash
+   heroku login
+   ```
+3. Create a new Heroku app:
+   ```bash
+   heroku create your-app-name
+   ```
+4. Set environment variables:
+   ```bash
+   heroku config:set MONGO_URI="your_mongodb_atlas_connection_string" --app your-app-name
+   heroku config:set JWT_SECRET="your_jwt_secret" --app your-app-name
+   heroku config:set NODE_ENV="production" --app your-app-name
+   heroku config:set FRONTEND_URL="https://your-frontend-url.com" --app your-app-name
+   ```
+5. Deploy to Heroku:
+   ```bash
+   git push heroku master
+   ```
+
+Alternatively, you can use the provided deployment scripts:
+- For Windows: `deploy-heroku.bat`
+- For Linux/Mac: `deploy-heroku.sh`
 
 ---
 
