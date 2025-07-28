@@ -4,24 +4,40 @@ const Project = require('../models/Project');
 
 
 const addTime = async (req, res) => {
-    const { projectId, timerValue, name, createdAt } = req.body;
+    const { project, timerValue, name, createdAt } = req.body;
 
     try {
-        const project = await Project.findById(projectId);
-
+        // Validate required fields
         if (!project) {
+            return res.status(400).json({ message: 'Project is required' });
+        }
+        if (!name) {
+            return res.status(400).json({ message: 'Task name is required' });
+        }
+        if (timerValue === undefined) {
+            return res.status(400).json({ message: 'Timer value is required' });
+        }
+
+        const projectObj = await Project.findById(project);
+
+        if (!projectObj) {
             return res.status(404).json({ message: 'Project not found' });
         }
 
         // Create timesheet data with required fields
         const timesheetData = { 
-            project: projectId, 
-            name: name, 
+            project, 
+            name, 
             timerValue 
         };
         
-        // Add createdAt if provided
+        // Add createdAt if provided and valid
         if (createdAt) {
+            // Validate createdAt is a valid date
+            const dateObj = new Date(createdAt);
+            if (isNaN(dateObj.getTime())) {
+                return res.status(400).json({ message: 'Invalid date format for createdAt' });
+            }
             timesheetData.createdAt = createdAt;
         }
 
@@ -29,13 +45,14 @@ const addTime = async (req, res) => {
         await timesheet.save();
 
         // Add timesheet to project
-        project.timesheets.push(timesheet._id);
-        await project.save();
+        projectObj.timesheets.push(timesheet._id);
+        await projectObj.save();
 
         res.status(201).json({ message: 'Timesheet entry added', timesheet });
-        console.log('Timesheet entry added', timesheet)
+        console.log('Timesheet entry added', timesheet);
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+        console.error('Error adding timesheet:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 
@@ -44,15 +61,26 @@ const updateTime = async (req, res) => {
     const { timerValue, createdAt } = req.body; // New timer value and optional createdAt
   
     try {
-      if (!timerValue) {
-        return res.status(400).json({ message: 'Timer value is required' });
+      // Check if at least one field is provided for update
+      if (!timerValue && !createdAt) {
+        return res.status(400).json({ message: 'At least one field (timerValue or createdAt) is required for update' });
       }
       
-      // Create update object with timerValue
-      const updateData = { timerValue };
+      // Create update object with provided fields
+      const updateData = {};
+      
+      // Add timerValue to update if provided
+      if (timerValue !== undefined) {
+        updateData.timerValue = timerValue;
+      }
       
       // Add createdAt to update if provided
       if (createdAt) {
+        // Validate createdAt is a valid date
+        const dateObj = new Date(createdAt);
+        if (isNaN(dateObj.getTime())) {
+          return res.status(400).json({ message: 'Invalid date format for createdAt' });
+        }
         updateData.createdAt = createdAt;
       }
   
@@ -68,7 +96,8 @@ const updateTime = async (req, res) => {
   
       res.status(200).json({ message: 'Timesheet updated successfully', timesheet: updatedTimesheet });
     } catch (error) {
-      res.status(500).json({ message: 'Server error', error });
+      console.error('Error updating timesheet:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
     }
   };
   const deleteTime = async (req, res) => {
